@@ -90,6 +90,35 @@
                 
             },
             
+            clone: function(_clone) {
+                
+                /***
+                 * clone(n) Produces n clones of collection
+                 * clone(n, true) clones events
+                 * clone(n, false) doesn't clone events
+                 * old clone(false|true) still intact
+                 */
+                
+                return function(n, evt) {
+                    
+                    if ( typeof n !== 'number' || isNaN(n) ) {
+                        return _clone.apply(this, arguments);
+                    }
+                    
+                    n = ~~(n < 0 ? -n : n);
+                    
+                    var cloned = [], push = cloned.push;
+                    
+                    while ( n-- ) {
+                        push.apply(cloned, _clone.call(this, evt).get());
+                    }
+                    
+                    return this.pushStack( cloned );
+                
+                };
+                
+            },
+            
             data: function(_data) {
                 
                 /***
