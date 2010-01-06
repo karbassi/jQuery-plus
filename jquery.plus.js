@@ -6,7 +6,7 @@
  *    - http://www.opensource.org/licenses/mit-license.php
  *    - http://www.gnu.org/copyleft/gpl.html
  * -------------------------------------------------------
- * Version: 0.1 (last-mod: 07-sept-2009)
+ * Version: 0.2 (last-mod: 06-Jan-2010)
  * -------------------------------------------------------
  */
 
@@ -34,7 +34,7 @@
                 
                    window.console && console.log ?
                        console.log.apply(console, arguments.length ? arguments : [this])
-                   : opera && opera.postError
+                   : window.opera && opera.postError
                        && opera.postError(o || this);
                 
                    $.log.cache = $.log.cache || [];
@@ -129,7 +129,8 @@
                 return function(a) {
                     
                     if (a === undefined) {
-                        return $.cache[$.data(this[0])];
+                        var d = $.data(this[0]);
+                        return isNaN(d) ? d : $.cache[d];
                     }
                     
                     return _data.apply(this, arguments);
@@ -438,11 +439,12 @@
              * jQuery selectors. E.g. $('a:data(abc=123)');
              */
             
-            var hasData = !!$.cache[$.data(elem)];
+            var dIndex = $.data(elem),
+                hasData = isNaN(dIndex) ? !!dIndex : !!$.cache[dIndex];
             
-            if (hasData && match[3]) {
+            if (hasData && match[0]) {
             
-                var args = match[3].match(/^(['"])?((?:\\=|[^=])+?)\1?(?:=(['"])?(.+?)\3?)?$/);
+                var args = match[0].match(/^:data\((['"])?((?:\\=|[^=])+?)\1?(?:=(['"])?(.+?)\3?)?\)$/);
                     key = $.trim(args[2]),
                     value = $.trim(args[4]),
                     regexMatch = null,
