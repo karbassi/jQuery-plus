@@ -1,7 +1,7 @@
 jQuery-Plus
 --
 
- - You can now request an elements entire data object by passing no arguments to `data()`:
+ - You can now request an element's entire data object by passing no arguments to `data()`:
     
         $(element).data(); // => {/* data object */}
     
@@ -13,7 +13,7 @@ jQuery-Plus
             mouseout: function(){}
         });
     
- - The `bind` method also accepts an non-function event handler in the form of an actionable-object:
+ - The `bind` method also accepts a non-function event handler in the form of an actionable-object:
  
         $(element).bind('click', { toggleClass: 'something' });
         // This applies to one(), click(), mouseover() etc. etc.
@@ -39,17 +39,29 @@ jQuery-Plus
             rel: 'something'
         });
     
+ - The `clone` method now accepts a number as its first argument, indicating how many clones you want:
+    
+        jQuery('<div/>').clone(5); // 5 div elements.
+        
+        // Copy events (2nd argument):
+        myjQueryCollection.clone(10, true);
+    
  - The `map` method accepts a string signifying what attributes to map:
     
-        $(lotsOfElements).map('attr:href'); // => ['http://google.com', 'http://msn.com', ...]
+        $(lotsOfAnchors).map('attr:href'); // => ['http://google.com', 'http://msn.com', ...]
+        $(lotsOfAnchors).map('text'); // => ['Google', 'MSN' ...]
+        
+        // FORMAT: [jQuery method name]:[first param]
     
- - All setter methods accept functions; these function must returnt he intended value:
+ - All setter methods accept functions; these function must return the intended value:
     
         $(element).css(function(){
             return {
                 color: $(this).css('backgroundColor')
             }
         });
+        
+        // Note: Useless on multi-argument methods.
     
  - All getter methods can return a full array of results instead of a single one; to enable this you must pass true as the very first argument:
     
@@ -62,6 +74,8 @@ jQuery-Plus
         $('div:data(abc)'); // => Tests that "abc" property is a truthy value
         $('div:data(abc=123)'); // => Tests that "abc" prop is equal to "123"
         $('div:data(abc=/\\d/)'); // => Tests that "abc" prop has at least one digit
+        
+        $(':data("abc"="Blah\"something")'); // Use quotes for complex values
 
  - `%=` operator can be used in attribute selectors for testing against a regular expression:
     
