@@ -1,11 +1,11 @@
 jQuery-Plus
 --
 
- - You can now request an element's entire data object by passing no arguments to `data()`:
+ - You can now request an element's entire data object by passing no arguments to `data()` (**Note:** jQuery >=1.4 does this anyway):
     
         $(element).data(); // => {/* data object */}
     
- - The `bind` method accepts multiple events handlers by passing an object with each property as a handler:
+ - The `bind` method accepts multiple events handlers by passing an object with each property as a handler (**Note:** jQuery >=1.4 does this anyway):
     
         $(element).bind({
             click: function(){},
