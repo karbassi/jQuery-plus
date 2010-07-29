@@ -97,10 +97,11 @@
                  * clone(n) Produces n clones of collection
                  * clone(n, true) clones events
                  * clone(n, false) doesn't clone events
+                 * clone(n, true|false, callback) runs function against cloned object
                  * old clone(false|true) still intact
                  */
                 
-                return function(n, evt) {
+                return function(n, evt, callback) {
                     
                     if ( typeof n !== 'number' || isNaN(n) ) {
                         return _clone.apply(this, arguments);
@@ -108,9 +109,11 @@
                     
                     n = ~~(n < 0 ? -n : n);
                     
-                    var cloned = [], push = cloned.push;
+                    var cloned = [], push = cloned.push, el;
                     
                     while ( n-- ) {
+                        el = _clone.call(this, evt).get();
+                        callback && callback.call(el);
                         push.apply(cloned, _clone.call(this, evt).get());
                     }
                     
@@ -302,7 +305,7 @@
                     
                     return _bind.call(this, type, data, fn);
                     
-                }
+                };
                 
             },
             
@@ -324,7 +327,7 @@
                     
                     return _bind.call(this, type, data, fn);
                     
-                }
+                };
                 
             }
         
@@ -445,7 +448,7 @@
             
             if (hasData && match[0]) {
             
-                var args = match[0].match(/^:data\((['"])?((?:\\=|[^=])+?)\1?(?:=(['"])?(.+?)\3?)?\)$/);
+                var args = match[0].match(/^:data\((['"])?((?:\\=|[^=])+?)\1?(?:=(['"])?(.+?)\3?)?\)$/),
                     key = $.trim(args[2]),
                     value = $.trim(args[4]),
                     regexMatch = null,
